@@ -1,0 +1,2598 @@
+<!--
+    ═════════════════════════════════════════════════════════
+    
+         ██████╗ ███████╗
+         ██╔══██╗██╔════╝
+         ██║  ██║███████╗    David Sangouard
+         ██║  ██║╚════██║    
+         ██████╔╝███████║    github.com/davidsangouard
+         ╚═════╝ ╚══════╝    
+    
+         » Architect of digital solutions
+         » Building the web, one pixel at a time
+    
+    ═════════════════════════════════════════════════════════
+-->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>README Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg: #0a1612;
+            --bg-light: #0f1f1a;
+            --surface: #1a2e28;
+            --surface-hover: #243832;
+            --text: #F6E9D9;
+            --text-dim: #c4b9a9;
+            --accent: #8AAA9D;
+            --accent-bright: #a0c4b5;
+            --border: #2D5F4C;
+            --border-dim: #1a3828;
+        }
+        
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            height: 60px;
+            background: var(--bg-light);
+            border-bottom: 1px solid var(--border-dim);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--text);
+            letter-spacing: 0.05em;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .header-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Space Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .header-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+        }
+        
+        .header-btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+            font-weight: 700;
+        }
+        
+        .header-btn.primary:hover {
+            background: var(--accent-bright);
+        }
+        
+        /* Main Layout */
+        .main {
+            display: grid;
+            grid-template-columns: 200px 1fr 1fr;
+            height: calc(100vh - 60px);
+            gap: 0;
+        }
+        
+        /* Mobile overlay - hidden by default */
+        .mobile-overlay {
+            display: none;
+        }
+        
+        .mobile-overlay.active {
+            display: block;
+        }
+        
+        /* Mobile menu button - hidden by default on desktop */
+        .mobile-menu-btn {
+            display: none;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: var(--bg-light);
+            overflow-y: auto;
+            padding: 1rem 0;
+            border-right: 1px solid var(--border-dim);
+        }
+        
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .sidebar::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .tool-group {
+            margin-bottom: 0.5rem;
+        }
+        
+        .tool-group-title {
+            font-size: 0.65rem;
+            color: var(--accent);
+            padding: 0.75rem 1rem 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            opacity: 0.7;
+        }
+        
+        .tool-btn {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: 'Space Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-align: left;
+        }
+        
+        .tool-btn:hover {
+            background: var(--surface);
+            color: var(--text);
+            padding-left: 1.25rem;
+        }
+        
+        .tool-btn i {
+            width: 16px;
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+        
+        /* Editor */
+        .editor {
+            background: var(--bg);
+            overflow-y: auto;
+            padding: 2rem;
+            border-right: 1px solid var(--border-dim);
+        }
+        
+        .editor::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .editor::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+        
+        .editor::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+        
+        .editor-empty {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+            color: var(--text-dim);
+            opacity: 0.3;
+        }
+        
+        .editor-empty i {
+            font-size: 3rem;
+        }
+        
+        /* Block */
+        .block {
+            background: var(--surface);
+            border: 1px solid var(--border-dim);
+            margin-bottom: 1rem;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        .block:hover {
+            border-color: var(--accent);
+        }
+        
+        .block.dragging {
+            opacity: 0.4;
+        }
+        
+        .block-drag-handle {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.2s;
+            cursor: move;
+        }
+        
+        .block:hover .block-drag-handle {
+            opacity: 1;
+        }
+        
+        .block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-dim);
+            background: var(--bg-light);
+            cursor: move;
+        }
+        
+        .block-type {
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .block-controls {
+            display: flex;
+            gap: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .block:hover .block-controls {
+            opacity: 1;
+        }
+        
+        .block-control-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.15s;
+        }
+        
+        .block-control-btn:hover {
+            color: var(--accent);
+        }
+        
+        .block-control-btn.delete:hover {
+            color: #ff6b6b;
+        }
+        
+        .block-content {
+            padding: 1rem;
+        }
+        
+        .block-input,
+        .block-textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border-dim);
+            color: var(--text);
+            padding: 0.75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            resize: vertical;
+            cursor: text;
+        }
+        
+        .block-input:focus,
+        .block-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--bg-light);
+        }
+        
+        .block-textarea {
+            min-height: 80px;
+        }
+        
+        .block-toolbar {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-dim);
+        }
+        
+        .toolbar-btn {
+            background: var(--bg);
+            border: 1px solid var(--border-dim);
+            color: var(--text-dim);
+            padding: 0.4rem 0.6rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.15s;
+        }
+        
+        .toolbar-btn:hover,
+        .toolbar-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+        }
+        
+        /* Preview */
+        .preview {
+            background: var(--bg-light);
+            overflow-y: auto;
+            padding: 2rem;
+        }
+        
+        .preview::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .preview::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        
+        .preview::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+        
+        .preview-empty {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+            color: var(--text-dim);
+            opacity: 0.3;
+        }
+        
+        .preview-empty i {
+            font-size: 3rem;
+        }
+        
+        /* Preview Markdown Styles */
+        .preview h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--text);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-dim);
+            padding-bottom: 0.5rem;
+        }
+        
+        .preview h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+            border-bottom: 1px solid var(--border-dim);
+            padding-bottom: 0.5rem;
+        }
+        
+        .preview h3 {
+            font-size: 1.5rem;
+            color: var(--text);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .preview p {
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            color: var(--text-dim);
+        }
+        
+        .preview ul,
+        .preview ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .preview li {
+            margin-bottom: 0.5rem;
+            color: var(--text-dim);
+        }
+        
+        .preview code {
+            background: var(--surface);
+            padding: 0.2rem 0.4rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+        
+        .preview pre {
+            background: var(--surface);
+            padding: 1rem;
+            border-left: 3px solid var(--accent);
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .preview pre code {
+            background: transparent;
+            padding: 0;
+        }
+        
+        .preview img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+        }
+        
+        .preview table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .preview th,
+        .preview td {
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .preview th {
+            background: var(--surface);
+            font-weight: 700;
+        }
+        
+        .preview blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+        
+        .preview a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .preview a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 22, 18, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-dim);
+        }
+        
+        .modal-title {
+            font-size: 1rem;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .modal-close:hover {
+            color: var(--accent);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border-dim);
+            color: var(--text);
+            padding: 0.75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--bg-light);
+        }
+        
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--text-dim);
+            opacity: 0.6;
+        }
+        
+        .form-select option {
+            background: var(--bg-light);
+            color: var(--text);
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .table-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+        
+        .btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.75rem 1.5rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Space Mono', monospace;
+        }
+        
+        .btn:hover {
+            background: var(--surface-hover);
+            border-color: var(--accent);
+        }
+        
+        .btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+        }
+        
+        .btn.primary:hover {
+            background: var(--accent-bright);
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 2000;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+        
+        .notification.show {
+            display: flex;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .main {
+                grid-template-columns: 180px 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 1100px) {
+            .main {
+                grid-template-columns: 160px 1fr;
+            }
+            
+            .preview {
+                display: none;
+            }
+            
+            .editor {
+                border-right: none;
+            }
+            
+            .header-actions {
+                gap: 0.25rem;
+            }
+            
+            .header-btn span {
+                display: none;
+            }
+            
+            .header-btn {
+                padding: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 1rem;
+            }
+            
+            .logo {
+                font-size: 1.1rem;
+            }
+            
+            .main {
+                grid-template-columns: 1fr;
+                height: auto;
+                min-height: calc(100vh - 60px);
+            }
+            
+            .sidebar {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 280px;
+                height: calc(100vh - 60px);
+                z-index: 100;
+                background: var(--bg-light);
+                padding: 1rem;
+                overflow-y: auto;
+                box-shadow: 4px 0 12px rgba(0, 0, 0, 0.5);
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                border-right: none;
+            }
+            
+            .sidebar.mobile-open {
+                display: block;
+                transform: translateX(0);
+            }
+            
+            /* Mobile overlay */
+            .mobile-overlay {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(10, 22, 18, 0.8);
+                z-index: 99;
+                backdrop-filter: blur(4px);
+            }
+            
+            .editor {
+                padding: 1rem;
+                min-height: calc(100vh - 60px);
+                border-right: none;
+            }
+            
+            .editor {
+                padding: 1rem;
+                min-height: calc(100vh - 60px);
+            }
+            
+            .block {
+                margin-bottom: 0.75rem;
+            }
+            
+            .block-header {
+                padding: 0.5rem 0.75rem;
+            }
+            
+            .block-content {
+                padding: 0.75rem;
+            }
+            
+            .block-toolbar {
+                flex-wrap: wrap;
+            }
+            
+            .toolbar-btn {
+                padding: 0.35rem 0.5rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                max-height: 90vh;
+            }
+            
+            .modal-body {
+                padding: 1rem;
+            }
+            
+            .form-group {
+                margin-bottom: 0.75rem;
+            }
+            
+            .header-btn {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+            }
+            
+            .header-btn i {
+                font-size: 0.9rem;
+            }
+            
+            /* Mobile menu button */
+            .mobile-menu-btn {
+                display: block;
+                background: transparent;
+                border: 1px solid var(--border);
+                color: var(--text);
+                padding: 0.5rem;
+                font-size: 1rem;
+                cursor: pointer;
+                margin-right: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 0 0.5rem;
+            }
+            
+            .logo {
+                font-size: 1rem;
+            }
+            
+            .header-actions {
+                gap: 0.25rem;
+            }
+            
+            .header-btn {
+                padding: 0.4rem;
+            }
+            
+            .header-btn span {
+                display: none;
+            }
+            
+            .editor {
+                padding: 0.5rem;
+            }
+            
+            .block-input,
+            .block-textarea {
+                font-size: 0.8rem;
+                padding: 0.6rem;
+            }
+            
+            .modal-content {
+                width: 98%;
+            }
+            
+            .modal-header {
+                padding: 0.75rem 1rem;
+            }
+            
+            .modal-title {
+                font-size: 0.85rem;
+            }
+            
+            .form-input,
+            .form-textarea,
+            .form-select {
+                font-size: 0.8rem;
+                padding: 0.6rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.75rem;
+            }
+            
+            .table-controls {
+                flex-wrap: wrap;
+            }
+            
+            .table-controls .btn {
+                flex: 1 1 30%;
+                min-width: 70px;
+            }
+            
+            .table-grid {
+                font-size: 0.75rem;
+            }
+            
+            .table-cell {
+                padding: 0.4rem;
+                font-size: 0.75rem;
+            }
+            
+            #tableRows,
+            #tableCols {
+                font-size: 0.8rem;
+            }
+        }
+        
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-left { text-align: left; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div style="display: flex; align-items: center;">
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="logo">README Studio</div>
+        </div>
+        <div class="header-actions">
+            <button class="header-btn" onclick="importTemplate()">
+                <i class="fas fa-file-import"></i>
+                <span>Import</span>
+            </button>
+            <button class="header-btn" onclick="exportTemplate()">
+                <i class="fas fa-file-export"></i>
+                <span>Export</span>
+            </button>
+            <button class="header-btn" onclick="copyMarkdown()">
+                <i class="fas fa-copy"></i>
+                <span>Copy</span>
+            </button>
+            <button class="header-btn primary" onclick="downloadReadme()">
+                <i class="fas fa-download"></i>
+                <span>Download</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Main Layout -->
+    <div class="main">
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="tool-group">
+                <div class="tool-group-title">Structure</div>
+                <button class="tool-btn" onclick="addBlock('h1')">
+                    <i class="fas fa-text-height"></i>
+                    <span>Title</span>
+                </button>
+                <button class="tool-btn" onclick="addBlock('h2')">
+                    <i class="fas fa-heading"></i>
+                    <span>Heading</span>
+                </button>
+                <button class="tool-btn" onclick="addBlock('h3')">
+                    <i class="fas fa-bars"></i>
+                    <span>Section</span>
+                </button>
+            </div>
+            
+            <div class="tool-group">
+                <div class="tool-group-title">Content</div>
+                <button class="tool-btn" onclick="addBlock('p')">
+                    <i class="fas fa-paragraph"></i>
+                    <span>Text</span>
+                </button>
+                <button class="tool-btn" onclick="addBlock('list')">
+                    <i class="fas fa-list"></i>
+                    <span>List</span>
+                </button>
+                <button class="tool-btn" onclick="addBlock('todo')">
+                    <i class="fas fa-check-square"></i>
+                    <span>Todo</span>
+                </button>
+                <button class="tool-btn" onclick="addBlock('code')">
+                    <i class="fas fa-code"></i>
+                    <span>Code</span>
+                </button>
+                <button class="tool-btn" onclick="addBlock('quote')">
+                    <i class="fas fa-quote-right"></i>
+                    <span>Quote</span>
+                </button>
+            </div>
+            
+            <div class="tool-group">
+                <div class="tool-group-title">Media</div>
+                <button class="tool-btn" onclick="openImageModal()">
+                    <i class="fas fa-image"></i>
+                    <span>Image</span>
+                </button>
+                <button class="tool-btn" onclick="openBadgeModal()">
+                    <i class="fas fa-shield"></i>
+                    <span>Badge</span>
+                </button>
+                <button class="tool-btn" onclick="addBlock('link')">
+                    <i class="fas fa-link"></i>
+                    <span>Link</span>
+                </button>
+            </div>
+            
+            <div class="tool-group">
+                <div class="tool-group-title">Advanced</div>
+                <button class="tool-btn" onclick="openTableModal()">
+                    <i class="fas fa-table"></i>
+                    <span>Table</span>
+                </button>
+                <button class="tool-btn" onclick="addBlock('details')">
+                    <i class="fas fa-caret-down"></i>
+                    <span>Details</span>
+                </button>
+                <button class="tool-btn" onclick="addBlock('hr')">
+                    <i class="fas fa-minus"></i>
+                    <span>Divider</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Editor -->
+        <div class="editor" id="editor">
+            <div class="editor-empty">
+                <i class="fas fa-arrow-left"></i>
+                <div>Start by adding blocks from the sidebar</div>
+            </div>
+        </div>
+        
+        <!-- Preview -->
+        <div class="preview" id="preview">
+            <div class="preview-empty">
+                <i class="fas fa-eye"></i>
+                <div>Preview will appear here</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Table Modal -->
+    <div id="tableModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Create Table</div>
+                <button class="modal-close" onclick="closeModal('tableModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-controls">
+                    <button class="btn" onclick="generateTableTemplate(2, 2)">2x2</button>
+                    <button class="btn" onclick="generateTableTemplate(3, 3)">3x3</button>
+                    <button class="btn" onclick="generateTableTemplate(4, 4)">4x4</button>
+                    <button class="btn" onclick="generateTableTemplate(5, 5)">5x5</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Rows x Columns</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="number" id="tableRows" class="form-input" value="3" min="2" max="20" style="width: 50%;" onchange="generateTableTemplate()">
+                        <input type="number" id="tableCols" class="form-input" value="3" min="2" max="20" style="width: 50%;" onchange="generateTableTemplate()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Markdown Table</label>
+                    <textarea id="tableMarkdown" class="form-textarea" style="min-height: 150px; font-family: 'Space Mono', monospace; font-size: 0.85rem;" placeholder="| Header 1 | Header 2 |&#10;|----------|----------|&#10;| Cell 1   | Cell 2   |"></textarea>
+                    <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-dim);">
+                        Tip: Use | to separate columns, and --- for the separator line
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Alignment</label>
+                    <select id="tableAlign" class="form-select">
+                        <option value="left">Left</option>
+                        <option value="center">Center</option>
+                        <option value="right">Right</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn" onclick="closeModal('tableModal')">Cancel</button>
+                    <button class="btn primary" onclick="insertTableFromMarkdown()">Insert Table</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Add Image</div>
+                <button class="modal-close" onclick="closeModal('imageModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Image URL</label>
+                    <input type="text" id="imageUrl" class="form-input" placeholder="https://example.com/image.png">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Alt Text</label>
+                    <input type="text" id="imageAlt" class="form-input" placeholder="Description">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Width (leave empty for auto)</label>
+                    <input type="text" id="imageWidth" class="form-input" placeholder="e.g., 300px, 50%, 100%">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Alignment</label>
+                    <select id="imageAlign" class="form-select">
+                        <option value="left">Left</option>
+                        <option value="center">Center</option>
+                        <option value="right">Right</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn" onclick="closeModal('imageModal')">Cancel</button>
+                    <button class="btn primary" onclick="insertImage()">Insert Image</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Badge Modal -->
+    <div id="badgeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Add Badge</div>
+                <button class="modal-close" onclick="closeModal('badgeModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Label</label>
+                    <input type="text" id="badgeLabel" class="form-input" placeholder="version">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <input type="text" id="badgeMessage" class="form-input" placeholder="1.0.0">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Color</label>
+                    <select id="badgeColor" class="form-select">
+                        <option value="blue">Blue</option>
+                        <option value="green">Green</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="red">Red</option>
+                        <option value="orange">Orange</option>
+                        <option value="lightgrey">Grey</option>
+                        <option value="brightgreen">Bright Green</option>
+                        <option value="success">Success</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Style</label>
+                    <select id="badgeStyle" class="form-select">
+                        <option value="flat">Flat</option>
+                        <option value="flat-square">Flat Square</option>
+                        <option value="plastic">Plastic</option>
+                        <option value="for-the-badge">For the Badge</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Alignment</label>
+                    <select id="badgeAlign" class="form-select">
+                        <option value="left">Left</option>
+                        <option value="center">Center</option>
+                        <option value="right">Right</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn" onclick="closeModal('badgeModal')">Cancel</button>
+                    <button class="btn primary" onclick="insertBadge()">Insert Badge</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText"></span>
+    </div>
+    
+    <!-- Hidden file input for import -->
+    <input type="file" id="importInput" accept=".json" style="display: none;" onchange="handleImport(event)">
+    
+    <script>
+        let blockCounter = 0;
+        let blocks = [];
+        
+        const editor = document.getElementById('editor');
+        const preview = document.getElementById('preview');
+        
+        // Drag and drop
+        let draggedElement = null;
+        
+        editor.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(editor, e.clientY);
+            const draggable = draggedElement;
+            if (afterElement == null) {
+                editor.appendChild(draggable);
+            } else {
+                editor.insertBefore(draggable, afterElement);
+            }
+        });
+        
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.block:not(.dragging)')];
+            
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+        
+        function addBlock(type) {
+            const id = `block-${blockCounter++}`;
+            const block = createBlock(id, type);
+            
+            const emptyState = editor.querySelector('.editor-empty');
+            if (emptyState) {
+                emptyState.remove();
+            }
+            
+            editor.appendChild(block);
+            blocks.push({ id, type });
+            updatePreview();
+        }
+        
+        function createBlock(id, type) {
+            const block = document.createElement('div');
+            block.className = 'block';
+            block.id = id;
+            block.draggable = true;
+            
+            block.addEventListener('dragstart', (e) => {
+                // Empêcher le drag si on clique sur un input, textarea, select ou button
+                const target = e.target;
+                if (target.tagName === 'INPUT' || 
+                    target.tagName === 'TEXTAREA' || 
+                    target.tagName === 'SELECT' ||
+                    target.tagName === 'BUTTON' ||
+                    target.closest('.block-toolbar') ||
+                    target.closest('.block-controls')) {
+                    e.preventDefault();
+                    block.draggable = false;
+                    return false;
+                }
+                draggedElement = block;
+                block.classList.add('dragging');
+            });
+            
+            block.addEventListener('mousedown', (e) => {
+                // Activer draggable seulement si on clique sur le header ou la drag-handle
+                const target = e.target;
+                if (target.closest('.block-header') && 
+                    !target.closest('.block-controls') ||
+                    target.closest('.block-drag-handle')) {
+                    block.draggable = true;
+                } else if (target.tagName === 'INPUT' || 
+                           target.tagName === 'TEXTAREA' || 
+                           target.tagName === 'SELECT' ||
+                           target.tagName === 'BUTTON') {
+                    block.draggable = false;
+                } else {
+                    block.draggable = true;
+                }
+            });
+            
+            block.addEventListener('dragend', () => {
+                block.classList.remove('dragging');
+                draggedElement = null;
+                updatePreview();
+            });
+            
+            let content = '';
+            let typeLabel = '';
+            
+            switch(type) {
+                case 'h1':
+                    typeLabel = 'Title';
+                    content = `
+                        <div class="block-toolbar">
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'left')" title="Left">
+                                <i class="fas fa-align-left"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'center')" title="Center">
+                                <i class="fas fa-align-center"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'right')" title="Right">
+                                <i class="fas fa-align-right"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="block-input" placeholder="Project Title" data-type="h1" data-align="left" oninput="updatePreview()">
+                    `;
+                    break;
+                case 'h2':
+                    typeLabel = 'Heading';
+                    content = `
+                        <div class="block-toolbar">
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'left')" title="Left">
+                                <i class="fas fa-align-left"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'center')" title="Center">
+                                <i class="fas fa-align-center"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'right')" title="Right">
+                                <i class="fas fa-align-right"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="block-input" placeholder="Section Heading" data-type="h2" data-align="left" oninput="updatePreview()">
+                    `;
+                    break;
+                case 'h3':
+                    typeLabel = 'Section';
+                    content = `
+                        <div class="block-toolbar">
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'left')" title="Left">
+                                <i class="fas fa-align-left"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'center')" title="Center">
+                                <i class="fas fa-align-center"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'right')" title="Right">
+                                <i class="fas fa-align-right"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="block-input" placeholder="Subsection" data-type="h3" data-align="left" oninput="updatePreview()">
+                    `;
+                    break;
+                case 'p':
+                    typeLabel = 'Text';
+                    content = `
+                        <div class="block-toolbar">
+                            <button class="toolbar-btn" onclick="formatSelection('${id}', 'bold')" title="Bold">
+                                <i class="fas fa-bold"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="formatSelection('${id}', 'italic')" title="Italic">
+                                <i class="fas fa-italic"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="formatSelection('${id}', 'code')" title="Code">
+                                <i class="fas fa-code"></i>
+                            </button>
+                            <div style="flex: 1;"></div>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'left')" title="Left">
+                                <i class="fas fa-align-left"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'center')" title="Center">
+                                <i class="fas fa-align-center"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'right')" title="Right">
+                                <i class="fas fa-align-right"></i>
+                            </button>
+                        </div>
+                        <textarea class="block-textarea" placeholder="Your text here..." data-type="p" data-align="left" oninput="updatePreview()"></textarea>
+                    `;
+                    break;
+                case 'list':
+                    typeLabel = 'List';
+                    content = `
+                        <div class="block-toolbar">
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'left')" title="Left">
+                                <i class="fas fa-align-left"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'center')" title="Center">
+                                <i class="fas fa-align-center"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'right')" title="Right">
+                                <i class="fas fa-align-right"></i>
+                            </button>
+                        </div>
+                        <textarea class="block-textarea" placeholder="Item 1&#10;Item 2&#10;Item 3" data-type="list" data-align="left" oninput="updatePreview()"></textarea>
+                    `;
+                    break;
+                case 'todo':
+                    typeLabel = 'Todo List';
+                    content = `
+                        <div class="block-toolbar">
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'left')" title="Left">
+                                <i class="fas fa-align-left"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'center')" title="Center">
+                                <i class="fas fa-align-center"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'right')" title="Right">
+                                <i class="fas fa-align-right"></i>
+                            </button>
+                        </div>
+                        <textarea class="block-textarea" placeholder="Task 1&#10;Task 2&#10;Task 3" data-type="todo" data-align="left" oninput="updatePreview()"></textarea>
+                    `;
+                    break;
+                case 'code':
+                    typeLabel = 'Code Block';
+                    content = `
+                        <div class="block-toolbar">
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'left')" title="Left">
+                                <i class="fas fa-align-left"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'center')" title="Center">
+                                <i class="fas fa-align-center"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'right')" title="Right">
+                                <i class="fas fa-align-right"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="block-input" placeholder="Language (e.g., javascript)" data-lang="true" data-align="left" style="margin-bottom: 0.5rem;" oninput="updatePreview()">
+                        <textarea class="block-textarea" placeholder="// Your code here" data-type="code" oninput="updatePreview()"></textarea>
+                    `;
+                    break;
+                case 'quote':
+                    typeLabel = 'Quote';
+                    content = `
+                        <div class="block-toolbar">
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'left')" title="Left">
+                                <i class="fas fa-align-left"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'center')" title="Center">
+                                <i class="fas fa-align-center"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'right')" title="Right">
+                                <i class="fas fa-align-right"></i>
+                            </button>
+                        </div>
+                        <textarea class="block-textarea" placeholder="Your quote..." data-type="quote" data-align="left" oninput="updatePreview()"></textarea>
+                    `;
+                    break;
+                case 'link':
+                    typeLabel = 'Link';
+                    content = `
+                        <div class="block-toolbar">
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'left')" title="Left">
+                                <i class="fas fa-align-left"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'center')" title="Center">
+                                <i class="fas fa-align-center"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'right')" title="Right">
+                                <i class="fas fa-align-right"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="block-input" placeholder="Link text" data-link-text="true" data-align="left" style="margin-bottom: 0.5rem;" oninput="updatePreview()">
+                        <input type="text" class="block-input" placeholder="URL" data-link-url="true" oninput="updatePreview()">
+                    `;
+                    break;
+                case 'details':
+                    typeLabel = 'Details';
+                    content = `
+                        <div class="block-toolbar">
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'left')" title="Left">
+                                <i class="fas fa-align-left"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'center')" title="Center">
+                                <i class="fas fa-align-center"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setAlignment('${id}', 'right')" title="Right">
+                                <i class="fas fa-align-right"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="block-input" placeholder="Summary" data-details-title="true" data-align="left" style="margin-bottom: 0.5rem;" oninput="updatePreview()">
+                        <textarea class="block-textarea" placeholder="Details content..." data-details-content="true" oninput="updatePreview()"></textarea>
+                    `;
+                    break;
+                case 'hr':
+                    typeLabel = 'Divider';
+                    content = `
+                        <div class="block-toolbar">
+                            <button class="toolbar-btn" onclick="setHRAlignment('${id}', 'left')" title="Left">
+                                <i class="fas fa-align-left"></i>
+                            </button>
+                            <button class="toolbar-btn active" onclick="setHRAlignment('${id}', 'center')" title="Center">
+                                <i class="fas fa-align-center"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="setHRAlignment('${id}', 'right')" title="Right">
+                                <i class="fas fa-align-right"></i>
+                            </button>
+                        </div>
+                        <div data-type="hr" data-align="center" style="height: 1px; background: var(--border); margin: 1rem auto; width: 100%;"></div>
+                    `;
+                    break;
+                case 'image':
+                case 'badge':
+                case 'table':
+                    // These are handled by modals
+                    return null;
+            }
+            
+            block.innerHTML = `
+                <div class="block-drag-handle"></div>
+                <div class="block-header">
+                    <div class="block-type">${typeLabel}</div>
+                    <div class="block-controls">
+                        <button class="block-control-btn" onclick="moveBlock('${id}', -1)">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button class="block-control-btn" onclick="moveBlock('${id}', 1)">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                        <button class="block-control-btn delete" onclick="deleteBlock('${id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="block-content">
+                    ${content}
+                </div>
+            `;
+            
+            return block;
+        }
+        
+        function createCustomBlock(id, type, data) {
+            const block = document.createElement('div');
+            block.className = 'block';
+            block.id = id;
+            block.draggable = true;
+            
+            block.addEventListener('dragstart', (e) => {
+                // Empêcher le drag si on clique sur un input, textarea, select ou button
+                const target = e.target;
+                if (target.tagName === 'INPUT' || 
+                    target.tagName === 'TEXTAREA' || 
+                    target.tagName === 'SELECT' ||
+                    target.tagName === 'BUTTON' ||
+                    target.closest('.block-toolbar') ||
+                    target.closest('.block-controls')) {
+                    e.preventDefault();
+                    block.draggable = false;
+                    return false;
+                }
+                draggedElement = block;
+                block.classList.add('dragging');
+            });
+            
+            block.addEventListener('mousedown', (e) => {
+                // Activer draggable seulement si on clique sur le header ou la drag-handle
+                const target = e.target;
+                if (target.closest('.block-header') && 
+                    !target.closest('.block-controls') ||
+                    target.closest('.block-drag-handle')) {
+                    block.draggable = true;
+                } else if (target.tagName === 'INPUT' || 
+                           target.tagName === 'TEXTAREA' || 
+                           target.tagName === 'SELECT' ||
+                           target.tagName === 'BUTTON') {
+                    block.draggable = false;
+                } else {
+                    block.draggable = true;
+                }
+            });
+            
+            block.addEventListener('dragend', () => {
+                block.classList.remove('dragging');
+                draggedElement = null;
+                updatePreview();
+            });
+            
+            let content = '';
+            let typeLabel = '';
+            
+            if (type === 'image') {
+                typeLabel = 'Image';
+                const imgStyle = data.width ? `max-width: ${data.width}; height: auto;` : 'max-width: 100%; height: auto;';
+                content = `
+                    <div class="form-group" style="margin-bottom: 0.5rem;">
+                        <label class="form-label" style="font-size: 0.7rem; margin-bottom: 0.25rem;">Image URL</label>
+                        <input type="text" class="block-input" value="${data.url}" data-image-url="true" placeholder="Image URL" oninput="updatePreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0.5rem;">
+                        <label class="form-label" style="font-size: 0.7rem; margin-bottom: 0.25rem;">Alt Text</label>
+                        <input type="text" class="block-input" value="${data.alt}" data-image-alt="true" placeholder="Alt text" oninput="updatePreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0.5rem;">
+                        <label class="form-label" style="font-size: 0.7rem; margin-bottom: 0.25rem;">Width (e.g., 300px, 50%, 100%)</label>
+                        <input type="text" class="block-input" value="${data.width || ''}" data-image-width="true" placeholder="Auto" oninput="updatePreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0.5rem;">
+                        <label class="form-label" style="font-size: 0.7rem; margin-bottom: 0.25rem;">Alignment</label>
+                        <select class="form-select" data-image-align="true" onchange="updatePreview()">
+                            <option value="left" ${data.align === 'left' ? 'selected' : ''}>Left</option>
+                            <option value="center" ${data.align === 'center' ? 'selected' : ''}>Center</option>
+                            <option value="right" ${data.align === 'right' ? 'selected' : ''}>Right</option>
+                        </select>
+                    </div>
+                    <img src="${data.url}" alt="${data.alt}" style="${imgStyle} margin-top: 0.5rem; display: block;">
+                `;
+            } else if (type === 'badge') {
+                typeLabel = 'Badge';
+                const align = data.align || 'left';
+                const badgeUrl = `https://img.shields.io/badge/${encodeURIComponent(data.label)}-${encodeURIComponent(data.message)}-${data.color}?style=${data.style}`;
+                content = `
+                    <div class="block-toolbar">
+                        <button class="toolbar-btn ${align === 'left' ? 'active' : ''}" onclick="setBadgeAlignment('${id}', 'left')" title="Left">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+                        <button class="toolbar-btn ${align === 'center' ? 'active' : ''}" onclick="setBadgeAlignment('${id}', 'center')" title="Center">
+                            <i class="fas fa-align-center"></i>
+                        </button>
+                        <button class="toolbar-btn ${align === 'right' ? 'active' : ''}" onclick="setBadgeAlignment('${id}', 'right')" title="Right">
+                            <i class="fas fa-align-right"></i>
+                        </button>
+                    </div>
+                    <input type="hidden" data-badge-label="true" value="${data.label}">
+                    <input type="hidden" data-badge-message="true" value="${data.message}">
+                    <input type="hidden" data-badge-color="true" value="${data.color}">
+                    <input type="hidden" data-badge-style="true" value="${data.style}">
+                    <input type="hidden" data-badge-align="true" value="${align}">
+                    <img src="${badgeUrl}" alt="${data.label}" style="margin-top: 0.5rem;">
+                `;
+            } else if (type === 'table') {
+                typeLabel = 'Table';
+                const align = data.align || 'left';
+                content = `
+                    <div class="block-toolbar">
+                        <button class="toolbar-btn ${align === 'left' ? 'active' : ''}" onclick="setAlignment('${id}', 'left')" title="Left">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+                        <button class="toolbar-btn ${align === 'center' ? 'active' : ''}" onclick="setAlignment('${id}', 'center')" title="Center">
+                            <i class="fas fa-align-center"></i>
+                        </button>
+                        <button class="toolbar-btn ${align === 'right' ? 'active' : ''}" onclick="setAlignment('${id}', 'right')" title="Right">
+                            <i class="fas fa-align-right"></i>
+                        </button>
+                    </div>
+                    <textarea class="block-textarea" data-type="table" data-align="${align}" oninput="updatePreview()">${data.markdown}</textarea>
+                `;
+            }
+            
+            block.innerHTML = `
+                <div class="block-drag-handle"></div>
+                <div class="block-header">
+                    <div class="block-type">${typeLabel}</div>
+                    <div class="block-controls">
+                        <button class="block-control-btn" onclick="moveBlock('${id}', -1)">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button class="block-control-btn" onclick="moveBlock('${id}', 1)">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                        <button class="block-control-btn delete" onclick="deleteBlock('${id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="block-content">
+                    ${content}
+                </div>
+            `;
+            
+            return block;
+        }
+        
+        function formatSelection(blockId, format) {
+            const block = document.getElementById(blockId);
+            const textarea = block.querySelector('textarea');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            
+            if (!selectedText) return;
+            
+            let formatted = '';
+            switch(format) {
+                case 'bold':
+                    formatted = `**${selectedText}**`;
+                    break;
+                case 'italic':
+                    formatted = `*${selectedText}*`;
+                    break;
+                case 'code':
+                    formatted = `\`${selectedText}\``;
+                    break;
+            }
+            
+            textarea.value = textarea.value.substring(0, start) + formatted + textarea.value.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start, start + formatted.length);
+            updatePreview();
+        }
+        
+        function setAlignment(blockId, align) {
+            const block = document.getElementById(blockId);
+            
+            // Find the element with alignment (input or textarea)
+            const input = block.querySelector('input[data-type^="h"]') || 
+                         block.querySelector('textarea[data-type]') ||
+                         block.querySelector('input[data-link-text]') ||
+                         block.querySelector('input[data-details-title]') ||
+                         block.querySelector('input[data-lang]');
+            
+            if (input) {
+                input.dataset.align = align;
+                
+                // Update button states
+                const buttons = block.querySelectorAll('.toolbar-btn');
+                buttons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Set active button
+                const alignIcons = {
+                    'left': 'fa-align-left',
+                    'center': 'fa-align-center',
+                    'right': 'fa-align-right'
+                };
+                
+                buttons.forEach(btn => {
+                    if (btn.querySelector(`.${alignIcons[align]}`)) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                updatePreview();
+            }
+        }
+        
+        function setBadgeAlignment(blockId, align) {
+            const block = document.getElementById(blockId);
+            const badgeAlignInput = block.querySelector('[data-badge-align]');
+            
+            if (badgeAlignInput) {
+                badgeAlignInput.value = align;
+                
+                // Update button states
+                const buttons = block.querySelectorAll('.toolbar-btn');
+                buttons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Set active button
+                const alignIcons = {
+                    'left': 'fa-align-left',
+                    'center': 'fa-align-center',
+                    'right': 'fa-align-right'
+                };
+                
+                buttons.forEach(btn => {
+                    if (btn.querySelector(`.${alignIcons[align]}`)) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                updatePreview();
+            }
+        }
+        
+        function setHRAlignment(blockId, align) {
+            const block = document.getElementById(blockId);
+            const hrDiv = block.querySelector('[data-type="hr"]');
+            
+            if (hrDiv) {
+                hrDiv.dataset.align = align;
+                
+                // Update visual appearance
+                if (align === 'left') {
+                    hrDiv.style.margin = '1rem 0 1rem auto';
+                    hrDiv.style.width = '50%';
+                } else if (align === 'center') {
+                    hrDiv.style.margin = '1rem auto';
+                    hrDiv.style.width = '100%';
+                } else if (align === 'right') {
+                    hrDiv.style.margin = '1rem auto 1rem 0';
+                    hrDiv.style.width = '50%';
+                }
+                
+                // Update button states
+                const buttons = block.querySelectorAll('.toolbar-btn');
+                buttons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Set active button
+                const alignIcons = {
+                    'left': 'fa-align-left',
+                    'center': 'fa-align-center',
+                    'right': 'fa-align-right'
+                };
+                
+                buttons.forEach(btn => {
+                    if (btn.querySelector(`.${alignIcons[align]}`)) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                updatePreview();
+            }
+        }
+        
+        function moveBlock(id, direction) {
+            const block = document.getElementById(id);
+            const sibling = direction === -1 ? block.previousElementSibling : block.nextElementSibling;
+            
+            if (sibling && sibling.classList.contains('block')) {
+                if (direction === -1) {
+                    sibling.before(block);
+                } else {
+                    sibling.after(block);
+                }
+                updatePreview();
+            }
+        }
+        
+        function deleteBlock(id) {
+            const block = document.getElementById(id);
+            block.remove();
+            blocks = blocks.filter(b => b.id !== id);
+            updatePreview();
+            
+            if (editor.querySelectorAll('.block').length === 0) {
+                editor.innerHTML = `
+                    <div class="editor-empty">
+                        <i class="fas fa-arrow-left"></i>
+                        <div>Start by adding blocks from the sidebar</div>
+                    </div>
+                `;
+            }
+        }
+        
+        function updatePreview() {
+            const allBlocks = editor.querySelectorAll('.block');
+            let markdown = '';
+            let html = '';
+            
+            allBlocks.forEach(block => {
+                // H1
+                const h1 = block.querySelector('[data-type="h1"]');
+                if (h1 && h1.value) {
+                    const align = h1.dataset.align || 'left';
+                    if (align === 'center') {
+                        markdown += `<h1 align="center">${h1.value}</h1>\n\n`;
+                        html += `<h1 style="text-align: center;">${escapeHtml(h1.value)}</h1>`;
+                    } else if (align === 'right') {
+                        markdown += `<h1 align="right">${h1.value}</h1>\n\n`;
+                        html += `<h1 style="text-align: right;">${escapeHtml(h1.value)}</h1>`;
+                    } else {
+                        markdown += `# ${h1.value}\n\n`;
+                        html += `<h1>${escapeHtml(h1.value)}</h1>`;
+                    }
+                }
+                
+                // H2
+                const h2 = block.querySelector('[data-type="h2"]');
+                if (h2 && h2.value) {
+                    const align = h2.dataset.align || 'left';
+                    if (align === 'center') {
+                        markdown += `<h2 align="center">${h2.value}</h2>\n\n`;
+                        html += `<h2 style="text-align: center;">${escapeHtml(h2.value)}</h2>`;
+                    } else if (align === 'right') {
+                        markdown += `<h2 align="right">${h2.value}</h2>\n\n`;
+                        html += `<h2 style="text-align: right;">${escapeHtml(h2.value)}</h2>`;
+                    } else {
+                        markdown += `## ${h2.value}\n\n`;
+                        html += `<h2>${escapeHtml(h2.value)}</h2>`;
+                    }
+                }
+                
+                // H3
+                const h3 = block.querySelector('[data-type="h3"]');
+                if (h3 && h3.value) {
+                    const align = h3.dataset.align || 'left';
+                    if (align === 'center') {
+                        markdown += `<h3 align="center">${h3.value}</h3>\n\n`;
+                        html += `<h3 style="text-align: center;">${escapeHtml(h3.value)}</h3>`;
+                    } else if (align === 'right') {
+                        markdown += `<h3 align="right">${h3.value}</h3>\n\n`;
+                        html += `<h3 style="text-align: right;">${escapeHtml(h3.value)}</h3>`;
+                    } else {
+                        markdown += `### ${h3.value}\n\n`;
+                        html += `<h3>${escapeHtml(h3.value)}</h3>`;
+                    }
+                }
+                
+                // Paragraph
+                const p = block.querySelector('[data-type="p"]');
+                if (p && p.value) {
+                    const align = p.dataset.align || 'left';
+                    if (align === 'center') {
+                        markdown += `<p align="center">${p.value}</p>\n\n`;
+                        html += `<p style="text-align: center;">${parseMarkdown(p.value)}</p>`;
+                    } else if (align === 'right') {
+                        markdown += `<p align="right">${p.value}</p>\n\n`;
+                        html += `<p style="text-align: right;">${parseMarkdown(p.value)}</p>`;
+                    } else {
+                        markdown += `${p.value}\n\n`;
+                        html += `<p>${parseMarkdown(p.value)}</p>`;
+                    }
+                }
+                
+                // List
+                const list = block.querySelector('[data-type="list"]');
+                if (list && list.value) {
+                    const align = list.dataset.align || 'left';
+                    const items = list.value.split('\n').filter(i => i.trim());
+                    
+                    let listMarkdown = '';
+                    items.forEach(item => {
+                        listMarkdown += `- ${item}\n`;
+                    });
+                    
+                    if (align === 'center') {
+                        markdown += `<div align="center">\n\n${listMarkdown}\n</div>\n\n`;
+                    } else if (align === 'right') {
+                        markdown += `<div align="right">\n\n${listMarkdown}\n</div>\n\n`;
+                    } else {
+                        markdown += `${listMarkdown}\n`;
+                    }
+                    
+                    let htmlList = '<ul>';
+                    items.forEach(item => {
+                        htmlList += `<li>${parseMarkdown(item)}</li>`;
+                    });
+                    htmlList += '</ul>';
+                    
+                    if (align === 'center') {
+                        html += `<div style="text-align: center;">${htmlList}</div>`;
+                    } else if (align === 'right') {
+                        html += `<div style="text-align: right;">${htmlList}</div>`;
+                    } else {
+                        html += htmlList;
+                    }
+                }
+                
+                // Todo
+                const todo = block.querySelector('[data-type="todo"]');
+                if (todo && todo.value) {
+                    const align = todo.dataset.align || 'left';
+                    const items = todo.value.split('\n').filter(i => i.trim());
+                    
+                    let todoMarkdown = '';
+                    items.forEach(item => {
+                        todoMarkdown += `- [ ] ${item}\n`;
+                    });
+                    
+                    if (align === 'center') {
+                        markdown += `<div align="center">\n\n${todoMarkdown}\n</div>\n\n`;
+                    } else if (align === 'right') {
+                        markdown += `<div align="right">\n\n${todoMarkdown}\n</div>\n\n`;
+                    } else {
+                        markdown += `${todoMarkdown}\n`;
+                    }
+                    
+                    let htmlTodo = '<ul style="list-style: none;">';
+                    items.forEach(item => {
+                        htmlTodo += `<li>☐ ${parseMarkdown(item)}</li>`;
+                    });
+                    htmlTodo += '</ul>';
+                    
+                    if (align === 'center') {
+                        html += `<div style="text-align: center;">${htmlTodo}</div>`;
+                    } else if (align === 'right') {
+                        html += `<div style="text-align: right;">${htmlTodo}</div>`;
+                    } else {
+                        html += htmlTodo;
+                    }
+                }
+                
+                // Code
+                const code = block.querySelector('[data-type="code"]');
+                if (code && code.value) {
+                    const langInput = block.querySelector('[data-lang]');
+                    const lang = langInput?.value || '';
+                    const align = langInput?.dataset.align || 'left';
+                    const codeBlock = `\`\`\`${lang}\n${code.value}\n\`\`\``;
+                    
+                    if (align === 'center') {
+                        markdown += `<div align="center">\n\n${codeBlock}\n\n</div>\n\n`;
+                        html += `<div style="text-align: center;"><pre><code>${escapeHtml(code.value)}</code></pre></div>`;
+                    } else if (align === 'right') {
+                        markdown += `<div align="right">\n\n${codeBlock}\n\n</div>\n\n`;
+                        html += `<div style="text-align: right;"><pre><code>${escapeHtml(code.value)}</code></pre></div>`;
+                    } else {
+                        markdown += `${codeBlock}\n\n`;
+                        html += `<pre><code>${escapeHtml(code.value)}</code></pre>`;
+                    }
+                }
+                
+                // Quote
+                const quote = block.querySelector('[data-type="quote"]');
+                if (quote && quote.value) {
+                    const align = quote.dataset.align || 'left';
+                    if (align === 'center') {
+                        markdown += `<blockquote align="center">\n${quote.value}\n</blockquote>\n\n`;
+                        html += `<div style="text-align: center;"><blockquote>${parseMarkdown(quote.value)}</blockquote></div>`;
+                    } else if (align === 'right') {
+                        markdown += `<blockquote align="right">\n${quote.value}\n</blockquote>\n\n`;
+                        html += `<div style="text-align: right;"><blockquote>${parseMarkdown(quote.value)}</blockquote></div>`;
+                    } else {
+                        markdown += `> ${quote.value}\n\n`;
+                        html += `<blockquote>${parseMarkdown(quote.value)}</blockquote>`;
+                    }
+                }
+                
+                // Link
+                const linkText = block.querySelector('[data-link-text]');
+                const linkUrl = block.querySelector('[data-link-url]');
+                if (linkText && linkText.value && linkUrl && linkUrl.value) {
+                    const align = linkText.dataset.align || 'left';
+                    const linkMarkdown = `[${linkText.value}](${linkUrl.value})`;
+                    
+                    if (align === 'center') {
+                        markdown += `<p align="center">${linkMarkdown}</p>\n\n`;
+                        html += `<p style="text-align: center;"><a href="${linkUrl.value}" target="_blank">${escapeHtml(linkText.value)}</a></p>`;
+                    } else if (align === 'right') {
+                        markdown += `<p align="right">${linkMarkdown}</p>\n\n`;
+                        html += `<p style="text-align: right;"><a href="${linkUrl.value}" target="_blank">${escapeHtml(linkText.value)}</a></p>`;
+                    } else {
+                        markdown += `${linkMarkdown}\n\n`;
+                        html += `<p><a href="${linkUrl.value}" target="_blank">${escapeHtml(linkText.value)}</a></p>`;
+                    }
+                }
+                
+                // Details
+                const detailsTitle = block.querySelector('[data-details-title]');
+                const detailsContent = block.querySelector('[data-details-content]');
+                if (detailsTitle && detailsTitle.value && detailsContent && detailsContent.value) {
+                    const align = detailsTitle.dataset.align || 'left';
+                    const detailsMarkdown = `<details>\n<summary>${detailsTitle.value}</summary>\n\n${detailsContent.value}\n</details>`;
+                    
+                    if (align === 'center') {
+                        markdown += `<div align="center">\n${detailsMarkdown}\n</div>\n\n`;
+                        html += `<div style="text-align: center;"><details><summary>${escapeHtml(detailsTitle.value)}</summary><p>${parseMarkdown(detailsContent.value)}</p></details></div>`;
+                    } else if (align === 'right') {
+                        markdown += `<div align="right">\n${detailsMarkdown}\n</div>\n\n`;
+                        html += `<div style="text-align: right;"><details><summary>${escapeHtml(detailsTitle.value)}</summary><p>${parseMarkdown(detailsContent.value)}</p></details></div>`;
+                    } else {
+                        markdown += `${detailsMarkdown}\n\n`;
+                        html += `<details><summary>${escapeHtml(detailsTitle.value)}</summary><p>${parseMarkdown(detailsContent.value)}</p></details>`;
+                    }
+                }
+                
+                // HR
+                const hr = block.querySelector('[data-type="hr"]');
+                if (hr) {
+                    const align = hr.dataset.align || 'center';
+                    if (align === 'left') {
+                        markdown += `<hr align="left" width="50%">\n\n`;
+                        html += `<hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0; width: 50%; margin-left: 0;">`;
+                    } else if (align === 'right') {
+                        markdown += `<hr align="right" width="50%">\n\n`;
+                        html += `<hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0; width: 50%; margin-left: auto;">`;
+                    } else {
+                        markdown += `---\n\n`;
+                        html += `<hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0;">`;
+                    }
+                }
+                
+                // Image
+                const imageUrl = block.querySelector('[data-image-url]');
+                const imageAlt = block.querySelector('[data-image-alt]');
+                const imageAlign = block.querySelector('[data-image-align]');
+                const imageWidth = block.querySelector('[data-image-width]');
+                if (imageUrl && imageUrl.value) {
+                    const alt = imageAlt?.value || 'Image';
+                    const align = imageAlign?.value || 'left';
+                    const width = imageWidth?.value || '';
+                    
+                    let imgTag = `![${alt}](${imageUrl.value})`;
+                    
+                    // Add width if specified
+                    if (width) {
+                        imgTag = `<img src="${imageUrl.value}" alt="${alt}" width="${width}">`;
+                    }
+                    
+                    if (align === 'center') {
+                        markdown += `<p align="center">\n  ${imgTag}\n</p>\n\n`;
+                        const htmlWidth = width ? `width="${width}"` : '';
+                        html += `<p style="text-align: center;"><img src="${imageUrl.value}" alt="${alt}" ${htmlWidth}></p>`;
+                    } else if (align === 'right') {
+                        markdown += `<p align="right">\n  ${imgTag}\n</p>\n\n`;
+                        const htmlWidth = width ? `width="${width}"` : '';
+                        html += `<p style="text-align: right;"><img src="${imageUrl.value}" alt="${alt}" ${htmlWidth}></p>`;
+                    } else {
+                        markdown += width ? `<img src="${imageUrl.value}" alt="${alt}" width="${width}">\n\n` : `${imgTag}\n\n`;
+                        const htmlWidth = width ? `width="${width}"` : '';
+                        html += `<img src="${imageUrl.value}" alt="${alt}" ${htmlWidth}>`;
+                    }
+                    
+                    // Update preview image in block
+                    const previewImg = block.querySelector('img');
+                    if (previewImg) {
+                        previewImg.src = imageUrl.value;
+                        previewImg.alt = alt;
+                        if (width) {
+                            previewImg.style.maxWidth = width;
+                        } else {
+                            previewImg.style.maxWidth = '100%';
+                        }
+                    }
+                }
+                
+                // Badge
+                const badgeLabel = block.querySelector('[data-badge-label]');
+                const badgeMessage = block.querySelector('[data-badge-message]');
+                const badgeColor = block.querySelector('[data-badge-color]');
+                const badgeStyle = block.querySelector('[data-badge-style]');
+                const badgeAlign = block.querySelector('[data-badge-align]');
+                if (badgeLabel && badgeLabel.value) {
+                    const label = badgeLabel.value;
+                    const message = badgeMessage?.value || '';
+                    const color = badgeColor?.value || 'blue';
+                    const style = badgeStyle?.value || 'flat';
+                    const align = badgeAlign?.value || 'left';
+                    const badgeUrl = `https://img.shields.io/badge/${encodeURIComponent(label)}-${encodeURIComponent(message)}-${color}?style=${style}`;
+                    const badgeMd = `![${label}](${badgeUrl})`;
+                    
+                    if (align === 'center') {
+                        markdown += `<p align="center">${badgeMd}</p>\n\n`;
+                        html += `<p style="text-align: center;"><img src="${badgeUrl}" alt="${label}" style="margin: 0.25rem;"></p>`;
+                    } else if (align === 'right') {
+                        markdown += `<p align="right">${badgeMd}</p>\n\n`;
+                        html += `<p style="text-align: right;"><img src="${badgeUrl}" alt="${label}" style="margin: 0.25rem;"></p>`;
+                    } else {
+                        markdown += `${badgeMd}\n\n`;
+                        html += `<img src="${badgeUrl}" alt="${label}" style="margin: 0.25rem;">`;
+                    }
+                }
+                
+                // Table
+                const table = block.querySelector('[data-type="table"]');
+                if (table && table.value) {
+                    const align = table.dataset.align || 'left';
+                    if (align === 'center') {
+                        markdown += `<div align="center">\n\n${table.value}\n\n</div>\n\n`;
+                        html += `<div style="text-align: center;">${parseTable(table.value)}</div>`;
+                    } else if (align === 'right') {
+                        markdown += `<div align="right">\n\n${table.value}\n\n</div>\n\n`;
+                        html += `<div style="text-align: right;">${parseTable(table.value)}</div>`;
+                    } else {
+                        markdown += `${table.value}\n\n`;
+                        html += parseTable(table.value);
+                    }
+                }
+            });
+            
+            if (html) {
+                preview.innerHTML = html;
+                preview.querySelector('.preview-empty')?.remove();
+            } else {
+                preview.innerHTML = `
+                    <div class="preview-empty">
+                        <i class="fas fa-eye"></i>
+                        <div>Preview will appear here</div>
+                    </div>
+                `;
+            }
+            
+            window.currentMarkdown = markdown;
+        }
+        
+        function parseMarkdown(text) {
+            return escapeHtml(text)
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                .replace(/`(.+?)`/g, '<code>$1</code>');
+        }
+        
+        function parseTable(markdown) {
+            const lines = markdown.trim().split('\n');
+            if (lines.length < 2) return '';
+            
+            let html = '<table>';
+            
+            lines.forEach((line, index) => {
+                if (index === 1) return; // Skip separator
+                
+                const cells = line.split('|').filter(c => c.trim());
+                const tag = index === 0 ? 'th' : 'td';
+                
+                html += '<tr>';
+                cells.forEach(cell => {
+                    html += `<${tag}>${escapeHtml(cell.trim())}</${tag}>`;
+                });
+                html += '</tr>';
+            });
+            
+            html += '</table>';
+            return html;
+        }
+        
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+        
+        // Modal functions
+        function openTableModal() {
+            document.getElementById('tableModal').classList.add('active');
+            generateTableTemplate(3, 3); // Default 3x3 table
+        }
+        
+        function openImageModal() {
+            document.getElementById('imageModal').classList.add('active');
+        }
+        
+        function openBadgeModal() {
+            document.getElementById('badgeModal').classList.add('active');
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        function generateTableTemplate(rows, cols) {
+            // If called with parameters, update the inputs
+            if (rows && cols) {
+                document.getElementById('tableRows').value = rows;
+                document.getElementById('tableCols').value = cols;
+            } else {
+                // Otherwise, read from inputs
+                rows = parseInt(document.getElementById('tableRows').value);
+                cols = parseInt(document.getElementById('tableCols').value);
+            }
+            
+            let markdown = '';
+            
+            // Header row
+            markdown += '|';
+            for (let j = 0; j < cols; j++) {
+                markdown += ` Header ${j + 1} |`;
+            }
+            markdown += '\n';
+            
+            // Separator row
+            markdown += '|';
+            for (let j = 0; j < cols; j++) {
+                markdown += ' --- |';
+            }
+            markdown += '\n';
+            
+            // Data rows
+            for (let i = 1; i < rows; i++) {
+                markdown += '|';
+                for (let j = 0; j < cols; j++) {
+                    markdown += ` Cell ${i},${j + 1} |`;
+                }
+                markdown += '\n';
+            }
+            
+            document.getElementById('tableMarkdown').value = markdown;
+            
+            // Update preview if visible
+            const preview = document.getElementById('tablePreview');
+            if (preview.style.display !== 'none') {
+                updateTablePreview();
+            }
+        }
+        
+        function insertTableFromMarkdown() {
+            const markdown = document.getElementById('tableMarkdown').value.trim();
+            const align = document.getElementById('tableAlign').value;
+            
+            if (!markdown) {
+                showNotification('Please enter table data');
+                return;
+            }
+            
+            const id = `block-${blockCounter++}`;
+            const block = createCustomBlock(id, 'table', { markdown, align });
+            
+            const emptyState = editor.querySelector('.editor-empty');
+            if (emptyState) emptyState.remove();
+            
+            editor.appendChild(block);
+            blocks.push({ id, type: 'table' });
+            
+            closeModal('tableModal');
+            document.getElementById('tableMarkdown').value = '';
+            updatePreview();
+        }
+        
+        function insertImage() {
+            const url = document.getElementById('imageUrl').value;
+            const alt = document.getElementById('imageAlt').value || 'Image';
+            const align = document.getElementById('imageAlign').value;
+            const width = document.getElementById('imageWidth').value;
+            
+            if (!url) {
+                showNotification('Please enter an image URL');
+                return;
+            }
+            
+            const id = `block-${blockCounter++}`;
+            const block = createCustomBlock(id, 'image', { url, alt, align, width });
+            
+            const emptyState = editor.querySelector('.editor-empty');
+            if (emptyState) emptyState.remove();
+            
+            editor.appendChild(block);
+            blocks.push({ id, type: 'image' });
+            
+            closeModal('imageModal');
+            document.getElementById('imageUrl').value = '';
+            document.getElementById('imageAlt').value = '';
+            document.getElementById('imageWidth').value = '';
+            updatePreview();
+        }
+        
+        function insertBadge() {
+            const label = document.getElementById('badgeLabel').value;
+            const message = document.getElementById('badgeMessage').value;
+            const color = document.getElementById('badgeColor').value;
+            const style = document.getElementById('badgeStyle').value;
+            const align = document.getElementById('badgeAlign').value;
+            
+            if (!label || !message) {
+                showNotification('Please enter label and message');
+                return;
+            }
+            
+            const id = `block-${blockCounter++}`;
+            const block = createCustomBlock(id, 'badge', { label, message, color, style, align });
+            
+            const emptyState = editor.querySelector('.editor-empty');
+            if (emptyState) emptyState.remove();
+            
+            editor.appendChild(block);
+            blocks.push({ id, type: 'badge' });
+            
+            closeModal('badgeModal');
+            document.getElementById('badgeLabel').value = '';
+            document.getElementById('badgeMessage').value = '';
+            updatePreview();
+        }
+        
+        // Export/Import
+        function exportTemplate() {
+            const allBlocks = editor.querySelectorAll('.block');
+            const template = {
+                version: '1.0',
+                blocks: []
+            };
+            
+            allBlocks.forEach(block => {
+                const blockData = { id: block.id };
+                
+                // Get block type and content
+                const h1 = block.querySelector('[data-type="h1"]');
+                const h2 = block.querySelector('[data-type="h2"]');
+                const h3 = block.querySelector('[data-type="h3"]');
+                const p = block.querySelector('[data-type="p"]');
+                const list = block.querySelector('[data-type="list"]');
+                const todo = block.querySelector('[data-type="todo"]');
+                const code = block.querySelector('[data-type="code"]');
+                const quote = block.querySelector('[data-type="quote"]');
+                const hr = block.querySelector('[data-type="hr"]');
+                const table = block.querySelector('[data-type="table"]');
+                
+                if (h1) {
+                    blockData.type = 'h1';
+                    blockData.value = h1.value;
+                    blockData.align = h1.dataset.align || 'left';
+                } else if (h2) {
+                    blockData.type = 'h2';
+                    blockData.value = h2.value;
+                    blockData.align = h2.dataset.align || 'left';
+                } else if (h3) {
+                    blockData.type = 'h3';
+                    blockData.value = h3.value;
+                    blockData.align = h3.dataset.align || 'left';
+                } else if (p) {
+                    blockData.type = 'p';
+                    blockData.value = p.value;
+                } else if (list) {
+                    blockData.type = 'list';
+                    blockData.value = list.value;
+                } else if (todo) {
+                    blockData.type = 'todo';
+                    blockData.value = todo.value;
+                } else if (code) {
+                    blockData.type = 'code';
+                    blockData.value = code.value;
+                    blockData.lang = block.querySelector('[data-lang]')?.value || '';
+                } else if (quote) {
+                    blockData.type = 'quote';
+                    blockData.value = quote.value;
+                } else if (hr) {
+                    blockData.type = 'hr';
+                } else if (table) {
+                    blockData.type = 'table';
+                    blockData.value = table.value;
+                }
+                
+                // Image
+                const imageUrl = block.querySelector('[data-image-url]');
+                if (imageUrl) {
+                    blockData.type = 'image';
+                    blockData.url = imageUrl.value;
+                    blockData.alt = block.querySelector('[data-image-alt]')?.value || '';
+                    blockData.align = block.querySelector('[data-image-align]')?.value || 'left';
+                    blockData.width = block.querySelector('[data-image-width]')?.value || '';
+                }
+                
+                // Badge
+                const badgeLabel = block.querySelector('[data-badge-label]');
+                if (badgeLabel) {
+                    blockData.type = 'badge';
+                    blockData.label = badgeLabel.value;
+                    blockData.message = block.querySelector('[data-badge-message]')?.value || '';
+                    blockData.color = block.querySelector('[data-badge-color]')?.value || 'blue';
+                    blockData.style = block.querySelector('[data-badge-style]')?.value || 'flat';
+                }
+                
+                // Link
+                const linkText = block.querySelector('[data-link-text]');
+                if (linkText) {
+                    blockData.type = 'link';
+                    blockData.text = linkText.value;
+                    blockData.url = block.querySelector('[data-link-url]')?.value || '';
+                }
+                
+                // Details
+                const detailsTitle = block.querySelector('[data-details-title]');
+                if (detailsTitle) {
+                    blockData.type = 'details';
+                    blockData.title = detailsTitle.value;
+                    blockData.content = block.querySelector('[data-details-content]')?.value || '';
+                }
+                
+                template.blocks.push(blockData);
+            });
+            
+            const blob = new Blob([JSON.stringify(template, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'readme-template.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('Template exported successfully!');
+        }
+        
+        function importTemplate() {
+            document.getElementById('importInput').click();
+        }
+        
+        function handleImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const template = JSON.parse(e.target.result);
+                    loadTemplate(template);
+                    showNotification('Template imported successfully!');
+                } catch (error) {
+                    showNotification('Error importing template');
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        function loadTemplate(template) {
+            // Clear current blocks
+            editor.innerHTML = '';
+            blocks = [];
+            blockCounter = 0;
+            
+            // Load blocks from template
+            template.blocks.forEach(blockData => {
+                const id = `block-${blockCounter++}`;
+                let block;
+                
+                if (['image', 'badge', 'table'].includes(blockData.type)) {
+                    block = createCustomBlock(id, blockData.type, blockData);
+                } else {
+                    block = createBlock(id, blockData.type);
+                    
+                    if (block) {
+                        // Set values
+                        const input = block.querySelector('input[type="text"]');
+                        const textarea = block.querySelector('textarea');
+                        
+                        if (input && blockData.value) {
+                            input.value = blockData.value;
+                            // Set alignment for titles
+                            if ((blockData.type === 'h1' || blockData.type === 'h2' || blockData.type === 'h3') && blockData.align) {
+                                input.dataset.align = blockData.align;
+                            }
+                        }
+                        if (textarea && blockData.value) {
+                            textarea.value = blockData.value;
+                        }
+                        if (blockData.lang) {
+                            const langInput = block.querySelector('[data-lang]');
+                            if (langInput) langInput.value = blockData.lang;
+                        }
+                        if (blockData.type === 'link') {
+                            const textInput = block.querySelector('[data-link-text]');
+                            const urlInput = block.querySelector('[data-link-url]');
+                            if (textInput) textInput.value = blockData.text || '';
+                            if (urlInput) urlInput.value = blockData.url || '';
+                        }
+                        if (blockData.type === 'details') {
+                            const titleInput = block.querySelector('[data-details-title]');
+                            const contentInput = block.querySelector('[data-details-content]');
+                            if (titleInput) titleInput.value = blockData.title || '';
+                            if (contentInput) contentInput.value = blockData.content || '';
+                        }
+                    }
+                }
+                
+                if (block) {
+                    editor.appendChild(block);
+                    blocks.push({ id, type: blockData.type });
+                }
+            });
+            
+            updatePreview();
+        }
+        
+        function downloadReadme() {
+            const markdown = window.currentMarkdown || '';
+            if (!markdown) {
+                showNotification('Add some content first');
+                return;
+            }
+            
+            const blob = new Blob([markdown], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'README.md';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('README.md downloaded!');
+        }
+        
+        function copyMarkdown() {
+            const markdown = window.currentMarkdown || '';
+            if (!markdown) {
+                showNotification('Add some content first');
+                return;
+            }
+            
+            navigator.clipboard.writeText(markdown).then(() => {
+                showNotification('Markdown copied to clipboard!');
+            });
+        }
+        
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const text = document.getElementById('notificationText');
+            text.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        function toggleMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
+        }
+        
+        // Close mobile menu when a tool is clicked
+        document.addEventListener('DOMContentLoaded', function() {
+            const toolButtons = document.querySelectorAll('.tool-btn');
+            toolButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const sidebar = document.querySelector('.sidebar');
+                    const overlay = document.getElementById('mobileOverlay');
+                    if (sidebar.classList.contains('mobile-open')) {
+                        sidebar.classList.remove('mobile-open');
+                        overlay.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
