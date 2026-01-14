@@ -3,7 +3,6 @@
 > Visual editor for crafting beautiful GitHub README files with drag-and-drop simplicity.
 
 [![Version](https://img.shields.io/badge/version-1.0-8AAA9D?style=flat-square)](/)
-[![Single File](https://img.shields.io/badge/single--file-HTML-8AAA9D?style=flat-square)](/)
 [![License](https://img.shields.io/badge/license-MIT-8AAA9D?style=flat-square)](https://opensource.org/licenses/MIT)
 
 ## Why README Studio?
@@ -125,29 +124,6 @@ See GitHub-styled preview in real-time
 - 🚀 **Repository presentations** - Showcase your work
 - ⚡ **Quick mockups** - Test layouts before committing
 - 👥 **Team standards** - Consistent README structure
-
-## Tech Stack
-
-- Pure vanilla JavaScript
-- Single HTML file (no build)
-- Zero dependencies
-- Works offline
-- Crimson Pro + Space Mono fonts
-
-## Mobile Support
-
-- Responsive grid layout
-- Touch-friendly drag & drop
-- Mobile menu for sidebar
-- Optimized for all screen sizes
-
-## Browser Support
-
-Works in all modern browsers:
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
 
 ## Tips
 
