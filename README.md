@@ -1,6 +1,6 @@
 # README Studio
 
-> Visual editor for crafting beautiful GitHub README files — no markdown syntax needed.
+> Visual editor for crafting beautiful GitHub README files - no markdown syntax needed.
 
 [![Version](https://img.shields.io/badge/version-1.0-8AAAD?style=flat-square)](https://github.com/davidsangouard/README-Studio)
 [![License](https://img.shields.io/badge/license-MIT-8AAAD?style=flat-square)](https://opensource.org/licenses/MIT)
@@ -16,18 +16,18 @@ Drag blocks, edit inline, preview in real-time, export as `.md`.
 
 ## Features
 
-- **Drag & drop blocks** — reorder elements instantly
-- **Live GitHub preview** — see the final render as you build
-- **Rich block library** — headers, text, code, tables, badges, images, dividers
-- **Alignment control** — left / center / right on every block
-- **Template system** — export/import layouts as JSON
+- **Drag & drop blocks** - reorder elements instantly
+- **Live GitHub preview** - see the final render as you build
+- **Rich block library** - headers, text, code, tables, badges, images, dividers
+- **Alignment control** - left / center / right on every block
+- **Template system** - export/import layouts as JSON
 
 ---
 
 ## Quick Start
 
 ```bash
-# No install needed — open directly in browser
+# No install needed - open directly in browser
 open readme-studio.html
 ```
 
@@ -40,8 +40,4 @@ open readme-studio.html
 
 ## License
 
-MIT — free for personal and commercial use.
-
----
-
-<p align="center">Built by <a href="https://github.com/davidsangouard">David Sangouard</a></p>
+MIT - free for personal and commercial use.
